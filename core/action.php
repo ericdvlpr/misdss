@@ -7,7 +7,27 @@
       if($_POST["action"] == "Load")  
       {  
            echo $object->get_data_in_table("SELECT * FROM users ORDER BY id DESC");  
-      }  
+      }
+      if($_POST["action"] == "Inventory")  
+      {  
+           echo $object->get_data_in_table("SELECT * FROM users ORDER BY id DESC");  
+      }
+      if($_POST["action"] == "Sales")  
+      {  
+           echo $object->get_data_in_table("SELECT * FROM users ORDER BY id DESC");  
+      }
+      if($_POST["action"] == "Payroll")  
+      {  
+           echo $object->get_data_in_table("SELECT * FROM users ORDER BY id DESC");  
+      } 
+      if($_POST["action"] == "Employee")  
+      {  
+           echo $object->get_data_in_table("SELECT * FROM users ORDER BY id DESC");  
+      }
+      if($_POST["action"] == "User")  
+      {  
+           echo $object->get_data_in_table("SELECT * FROM users ORDER BY id DESC");  
+      }   
       if($_POST["action"] == "Insert")  
       {  
            $first_name = mysqli_real_escape_string($object->connect, $_POST["first_name"]);  

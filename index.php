@@ -1,60 +1,144 @@
-<?php include 'includes/header.php';?>
-    <div class="container-fluid">
-      <div class="row">
-       <?php include 'includes/sidebar.php'; ?>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h1 class="page-header">Dashboard</h1>
+<?php
+//index.php
+include('database_connection.php');
+include('function.php');
 
-          <div class="row placeholders">
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-          </div>
+if(!isset($_SESSION["type"]))
+{
+	header("location:login.php");
+}
 
-          <h2 class="sub-header">Section title</h2>
-           <h3 align="center">PHP Ajax Crud using OOPS - Insert or Add Mysql Data</h3><br />  
-                <button type="button" name="add" class="btn btn-success" data-toggle="collapse" data-target="#user_collapse">Add</button>  
-                <br /><br />  
-                <div id="user_collapse" class="collapse">  
-                     <form method="post" id="user_form">  
-                          <label>Enter First Name</label>  
-                          <input type="text" name="first_name" id="first_name" class="form-control" />  
-                          <br />  
-                          <label>Enter Last Name</label>  
-                          <input type="text" name="last_name" id="last_name" class="form-control" />  
-                          <br />  
-                          <label>Select User Image</label>  
-                          <input type="file" name="user_image" id="user_image" />  
-                          <br />  
-                          <div align="center">  
-                               <input type="hidden" name="action" id="action" />  
-                               <input type="submit" name="button_action" id="button_action" class="btn btn-default" value="Insert" />  
-                          </div>  
-                     </form>  
-                </div>  
-                <br /><br />  
-                <div id="user_table" class="table-responsive">  
-                </div>  
-        </div>
-      </div>
-    </div>
-<?php 
-include 'includes/footer.php';
+include('includes/header.php');
+
+?>
+<!-- To DO  Finish Design Dashboard -->
+	<br />
+	<div class="row">
+	<?php
+	if($_SESSION['type'] == 'master')
+	{
+	?>
+	<div class="col-md-3">
+		<div class="panel panel-default">
+			<div class="panel-heading"><strong>TOTAL USER</strong></div>
+			<div class="panel-body" align="center">
+				<h1><?php echo count_total_user($connect); ?></h1>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="panel panel-default">
+			<div class="panel-heading"><strong>TOTAL CATEGORY</strong></div>
+			<div class="panel-body" align="center">
+				<h1><?php echo count_total_category($connect); ?></h1>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="panel panel-default">
+			<div class="panel-heading"><strong>TOTAL BRAND</strong></div>
+			<div class="panel-body" align="center">
+				<h1><?php echo count_total_brand($connect); ?></h1>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="panel panel-default">
+			<div class="panel-heading"><strong>TOTAL ITEM IN STOCK</strong></div>
+			<div class="panel-body" align="center">
+				<h1><?php echo count_total_product($connect); ?></h1>
+			</div>
+		</div>
+	</div>
+	<?php
+	}elseif($_SESSION['type'] == 'sale')
+	{
+	?>
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="panel-heading"><strong>TOTAL ORDER VALUE</strong></div>
+				<div class="panel-body" align="center">
+					<h1>$<?php echo count_total_order_value($connect); ?></h1>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="panel-heading"><strong>TOTAL CASH ORDER VALUE</strong></div>
+				<div class="panel-body" align="center">
+					<h1>$<?php echo count_total_cash_order_value($connect); ?></h1>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="panel-heading"><strong>TOTAL CREDIT ORDER VALUE</strong></div>
+				<div class="panel-body" align="center">
+					<h1>$<?php echo count_total_credit_order_value($connect); ?></h1>
+				</div>
+			</div>
+		</div>
+		<hr />
+		<?php }elseif($_SESSION['type'] == 'inventory'){ ?>
+			<div class="col-md-3">
+				<div class="panel panel-default">
+					<div class="panel-heading"><strong>TOTAL CATEGORY</strong></div>
+					<div class="panel-body" align="center">
+						<h1><?php echo count_total_category($connect); ?></h1>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="panel panel-default">
+					<div class="panel-heading"><strong>TOTAL BRAND</strong></div>
+					<div class="panel-body" align="center">
+						<h1><?php echo count_total_brand($connect); ?></h1>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="panel panel-default">
+					<div class="panel-heading"><strong>TOTAL ITEM IN STOCK</strong></div>
+					<div class="panel-body" align="center">
+						<h1><?php echo count_total_product($connect); ?></h1>
+					</div>
+				</div>
+			</div>
+		<?php }elseif($_SESSION['type'] == 'payroll'){ ?>
+			<div class="col-md-3">
+				<div class="panel panel-default">
+					<div class="panel-heading"><strong>TOTAL PAYROLL</strong></div>
+					<div class="panel-body" align="center">
+						<h1><?php echo count_total_payroll($connect); ?></h1>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="panel panel-default">
+					<div class="panel-heading"><strong>TOTAL EMPLOYEE</strong></div>
+					<div class="panel-body" align="center">
+						<h1><?php echo count_total_employee($connect); ?></h1>
+					</div>
+				</div>
+			</div>
+		<?php } ?>
+		<?php
+		if($_SESSION['type'] == 'master')
+		{
+		?>
+<!-- 		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading"><strong>TOTAL ORDER VALUE USER WISE</strong></div>
+				<div class="panel-body" align="center">
+					<?php// echo get_user_wise_total_order($connect); ?>
+				</div>
+			</div>
+		</div> -->
+		<?php
+		}
+		?>
+	</div>
+
+<?php
+include("includes/footer.php");
 ?>

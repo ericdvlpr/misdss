@@ -102,10 +102,6 @@ include('includes/header.php');
                                 <label>Enter Product Base Price</label>
                                 <input type="text" name="product_base_price" id="product_base_price" class="form-control" required pattern="[+-]?([0-9]*[.])?[0-9]+" />
                             </div>
-                            <div class="form-group">
-                                <label>Enter Product Tax (%)</label>
-                                <input type="text" name="product_tax" id="product_tax" class="form-control" required pattern="[+-]?([0-9]*[.])?[0-9]+" />
-                            </div>
                         </div>
                         <div class="modal-footer">
                             <input type="hidden" name="product_id" id="product_id" />

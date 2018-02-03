@@ -56,6 +56,7 @@ foreach($result as $row)
 	$sub_array[] = $row['philhealth'];
 	$sub_array[] = $row['netincome'];
 	$sub_array[] = $row['monthof'];
+	$sub_array[] ='<button class="btn btn-default viewdtr" id="'.$row["employee_id"].'">View DTR</button>';
 	
 	$data[] = $sub_array;
 }

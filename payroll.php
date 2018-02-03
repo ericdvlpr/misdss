@@ -15,7 +15,6 @@ if(!isset($_SESSION["type"]))
 
 include('includes/header.php');
 
-
 ?>
 <!-- To DO  add deduction when absent and display employee logs -->
 		<span id="alert_action"></span>
@@ -25,7 +24,7 @@ include('includes/header.php');
                     <div class="panel-heading">
                     	<div class="row">
                         	<div class="col-lg-10 col-md-10 col-sm-8 col-xs-6">
-                            	<h3 class="panel-title">Employee List</h3>
+                            	<h3 class="panel-title">Payroll List</h3>
                             </div>
                             <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6" align="right">
                             	<button type="button" name="add" id="add_button" data-toggle="modal" data-target="#payrollModal" class="btn btn-success btn-xs">Add</button>
@@ -49,6 +48,7 @@ include('includes/header.php');
 										<!-- <th>Tax</th> -->
 										<th>Net Income</th>
 										<th>Month of</th>
+										<th>Command</th>
 										
 									</tr>
 								</thead>
@@ -126,6 +126,29 @@ include('includes/header.php');
 
         	</div>
         </div>
+        <div id="dtrModal" class="modal fade">
+        	<div class="modal-dialog">
+        		<div class="modal-content">
+	        			<div class="modal-header">
+	        				<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title"><i class="fa fa-plus"></i> Add Payroll</h4>
+	        			</div>
+	        			<div class="modal-body">
+		        		<table  class="table table-striped">
+		        			<thead>
+		        				<tr>
+		        					<td>Date</td>
+		        					<td>Time In</td>
+		        					<td>Time Out</td>
+		        				</tr>
+		        			</thead>
+		        			<tbody id="dtr_table"></tbody>
+		        		</table>
+
+	        		</div>
+	       		 </div>
+        	</div>
+      </div>
 
 <?php
 include('includes/footer.php');

@@ -119,6 +119,40 @@ if(isset($_POST['btn_action']))
 			echo 'Employee Status change to ' . $status;
 		}
 	}
+	if($_POST["btn_action"] == "fetch_dtr") 
+		 {
+		  $statement = $connect->prepare("SELECT * FROM dtr WHERE employee_id = :employee_id");
+		  $statement->execute(
+			array(
+				':employee_id'	=>	$_POST["employee_id"]
+			)
+		);
+		  $result = $statement->fetchAll();
+		  $output = '';
+		  if($statement->rowCount() > 0)
+		  {
+		   foreach($result as $row)
+		   {
+		    $output .= '
+		    <tr>
+		     <td>'.$row["date"].'</td>
+		     <td>'.$row["time_in"].'</td>
+		     <td>'.$row["time_out"].'</td>
+		    </tr>
+		    ';
+		   }
+		  }
+		  else
+		  {
+		   $output .= '
+		    <tr>
+		     <td align="center">Data not Found</td>
+		    </tr>
+		   ';
+		  }
+		  $output .= '</table>';
+		  echo $output;
+		 }
 
 }
 

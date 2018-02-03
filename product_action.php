@@ -17,8 +17,8 @@ if(isset($_POST['btn_action']))
 	if($_POST['btn_action'] == 'Addproduct')
 	{
 		$query = "
-		INSERT INTO product (category_id, brand_id, product_name, product_description, product_quantity, product_unit, product_base_price, product_tax, product_enter_by, product_status, product_date) 
-		VALUES (:category_id, :brand_id, :product_name, :product_description, :product_quantity, :product_unit, :product_base_price, :product_tax, :product_enter_by, :product_status, :product_date)
+		INSERT INTO product (category_id, brand_id, product_name, product_description, product_quantity, product_unit, product_base_price, product_enter_by, product_status, product_date) 
+		VALUES (:category_id, :brand_id, :product_name, :product_description, :product_quantity, :product_unit, :product_base_price, :product_enter_by, :product_status, :product_date)
 		";
 		$statement = $connect->prepare($query);
 		$statement->execute(
@@ -30,7 +30,6 @@ if(isset($_POST['btn_action']))
 				':product_quantity'		=>	$_POST['product_quantity'],
 				':product_unit'			=>	$_POST['product_unit'],
 				':product_base_price'	=>	$_POST['product_base_price'],
-				':product_tax'			=>	$_POST['product_tax'],
 				':product_enter_by'		=>	$_SESSION["user_id"],
 				':product_status'		=>	'active',
 				':product_date'			=>	date("Y-m-d")
@@ -95,10 +94,6 @@ if(isset($_POST['btn_action']))
 				<td>'.$row["product_base_price"].'</td>
 			</tr>
 			<tr>
-				<td>Tax (%)</td>
-				<td>'.$row["product_tax"].'</td>
-			</tr>
-			<tr>
 				<td>Enter By</td>
 				<td>'.$row["user_name"].'</td>
 			</tr>
@@ -137,7 +132,6 @@ if(isset($_POST['btn_action']))
 			$output['product_unit'] = $row['product_unit'];
 
 			$output['product_base_price'] = $row['product_base_price'];
-			$output['product_tax'] = $row['product_tax'];
 		}
 		echo json_encode($output);
 	}
@@ -152,8 +146,7 @@ if(isset($_POST['btn_action']))
 		product_description = :product_description, 
 		product_quantity = :product_quantity, 
 		product_unit = :product_unit, 
-		product_base_price = :product_base_price, 
-		product_tax = :product_tax 
+		product_base_price = :product_base_price
 		WHERE product_id = :product_id
 		";
 		$statement = $connect->prepare($query);
@@ -166,7 +159,6 @@ if(isset($_POST['btn_action']))
 				':product_quantity'		=>	$_POST['product_quantity'],
 				':product_unit'			=>	$_POST['product_unit'],
 				':product_base_price'	=>	$_POST['product_base_price'],
-				':product_tax'			=>	$_POST['product_tax'],
 				':product_id'			=>	$_POST['product_id']
 			)
 		);

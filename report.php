@@ -20,22 +20,24 @@ include('includes/header.php');
 						<div class="form-group">
 							<label class="col-sm-5">Report Type: </label>
 							<div class="col-sm-7">
-								<select class="form-control" id='reportType'>
+								<select class="form-control" id='reportType' required>
 									<option value="">PLEASE SELECT</option>
 									<option value="inventory">Inventory</option>
 									<option value="sales">Sales</option>
 									<option value="payroll">Payroll</option>
 									<option value="employee">Employee</option>
+									<option value="dtr">DTR</option>
 								</select>
 							</div>
 						</div>
+						<button type="button" name="submit" class="btn btn-default" id="submit">Submit</button>
 					</form>
 					<div class="btn-group pull-right" id="print"  style="display: none ;">
                         <button class="btn btn-default" id="print" onclick="printContent('div1')"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> PRINT</button>
 			        </div>
 			        <br />
 					<div class="col-md-12" id="employee" style="display: none ;">
-						<div class="panel panel-default" id="div1">
+						<div class="panel panel-default employee_report">
 							<div class="panel-heading">
 								<strong>TOTAL NUMBER EMPLOYEE</strong>
 
@@ -46,7 +48,7 @@ include('includes/header.php');
 						</div>
 					</div>
 					<div class="col-md-12" id="sales" style="display:none;">
-						<div class="panel panel-default" id="div1">
+						<div class="panel panel-default sales_report">
 							<div class="panel-heading">
 								<strong>TOTAL SALES</strong>
 
@@ -57,7 +59,7 @@ include('includes/header.php');
 						</div>
 					</div>
 					<div class="col-md-12" id="inventory" style="display: none;">
-						<div class="panel panel-default" id="div1">
+						<div class="panel panel-default inventory_report">
 							<div class="panel-heading">
 								<strong>TOTAL INVENTORY</strong>
 
@@ -68,13 +70,24 @@ include('includes/header.php');
 						</div>
 					</div>
 					<div class="col-md-12" id="payroll" style="display: none;">
-						<div class="panel panel-default" id="div1">
+						<div class="panel panel-default payroll_report">
 							<div class="panel-heading">
 								<strong>TOTAL PAYROLL</strong>
 
 							</div>
 							<div class="panel-body" align="center">
 								<?php echo get_total_payroll($connect); ?>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-12" id="dtr" style="display: none;">
+						<div class="panel panel-default dtr_report">
+							<div class="panel-heading">
+								<strong>DAILY TIME RECORD</strong>
+
+							</div>
+							<div class="panel-body" align="center">
+								<?php echo get_daily_time_record($connect); ?>
 							</div>
 						</div>
 					</div>

@@ -1,5 +1,6 @@
 $(document).ready(function(){
     $('input:password').attr("maxlength",11);
+
     //Product Module
     var productdataTable = $('#product_data').DataTable({
         "processing":true,
@@ -20,7 +21,7 @@ $(document).ready(function(){
     $('.modal').on('hidden.bs.modal', function(){
                 $(this).find('form')[0].reset();
                 $('#action').val("Add");
-            });
+    });
     $('#add_product').click(function(){
         $('#productModal').modal('show');
         $('#product_form')[0].reset();
@@ -238,6 +239,7 @@ $(document).ready(function(){
         "pageLength": 25
     });
 
+
     $(document).on('submit', '#employee_form', function(event){
         event.preventDefault();
         $('#action').attr('disabled','disabled');
@@ -384,6 +386,21 @@ $(document).ready(function(){
             },
         ],
         "pageLength": 25
+    });
+    $(document).on('click', '.viewdtr', function(){
+        var employee_id = $(this).attr('id');
+        var btn_action = 'fetch_dtr'; 
+            $.ajax({
+                url:"payroll_action.php",
+                method:"POST",
+                data:{employee_id:employee_id, btn_action:btn_action},
+                success:function(data)
+                {
+                        $('.modal-title').html("<i class='fa fa-pencil-square-o'></i> View DTR");
+                        $('#dtrModal').modal('show');
+                        $('#dtr_table').html(data);
+                }
+            });
     });
     $(document).on('click', '.delete', function(){
         var payroll_id = $(this).attr('id');
@@ -768,14 +785,15 @@ $(document).ready(function(){
             }
         })
     });
-    $("#reportType").on('change',function(){
-        var type = $(this).val();
+    $("#submit").on('click',function(){
+        var type = $("#reportType").val();
         if(type=='inventory'){
             $("#inventory").css("display","");
              $("#print").css("display","");
             $("#sales").css("display","none");
              $("#employee").css("display","none");
             $("#payroll").css("display","none");
+            $(".inventory_report").attr('id','div1');
            
         }
         if(type=='sales'){
@@ -784,6 +802,7 @@ $(document).ready(function(){
              $("#inventory").css("display","none");
             $("#employee").css("display","none");
             $("#payroll").css("display","none");
+            $(".sales_report").attr('id','div1');
         }
         if(type=='employee'){
             $("#employee").css("display","");
@@ -791,6 +810,7 @@ $(document).ready(function(){
             $("#sales").css("display","none");
              $("#inventory").css("display","none");
              $("#payroll").css("display","none");
+             $(".employee_report").attr('id','div1');
         }
         if(type=='payroll'){
             $("#payroll").css("display","");
@@ -798,6 +818,16 @@ $(document).ready(function(){
             $("#employee").css("display","none");
             $("#sales").css("display","none");
              $("#inventory").css("display","none");
+             $(".payroll_report").attr('id','div1');
+        }
+        if(type=='dtr'){
+            $("#dtr").css("display","");
+             $("#print").css("display","");
+            $("#payroll").css("display","none");
+            $("#employee").css("display","none");
+            $("#sales").css("display","none");
+             $("#inventory").css("display","none");
+             $(".dtr_report").attr('id','div1');
         }
         if(type==''){
              $("#print").css("display","none");
@@ -805,8 +835,10 @@ $(document).ready(function(){
             $("#employee").css("display","none");
             $("#sales").css("display","none");
              $("#inventory").css("display","none");
+
         }
 
     });
+
     
 });

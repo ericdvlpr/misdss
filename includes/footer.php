@@ -8,7 +8,8 @@
 			document.body.innerHTML = printcontent;
 			window.print();
 			document.body.innerHTML = restorepage;
-
+			window.location.reload();
+			
 		}
 		</script>
 <script src="js/jquery-1.10.2.min.js"></script>

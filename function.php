@@ -455,7 +455,6 @@ SELECT * FROM product JOIN category USING (category_id) JOIN brand USING (brand_
 				<th>Description</th>
 				<th>Quantity</th>
 				<th>Base Price</th>
-				<th>Tax</th>
 			</tr>
 	';
 	$total_quantity = 0;
@@ -473,7 +472,6 @@ SELECT * FROM product JOIN category USING (category_id) JOIN brand USING (brand_
 			<td> '.$row["product_description"].'</td>
 			<td align="right"> '.$row["product_quantity"].'</td>
 			<td align="right"> '.$row["product_base_price"].'</td>
-			<td align="right"> '.$row["product_tax"].'</td>
 		</tr>
 		';
 	}
@@ -491,7 +489,45 @@ SELECT * FROM product JOIN category USING (category_id) JOIN brand USING (brand_
 		';
 		return $output;
 	}
-	
+function get_daily_time_record($connect) {
+	$query = '
+	SELECT * FROM dtr JOIN employee_details USING (employee_id)';
+		$statement = $connect->prepare($query);
+		$statement->execute();
+		$result = $statement->fetchAll();
+		$output = '
+		<div class="table-responsive">
+			<table class="table table-bordered table-striped">
+				<tr>
+					<th>Employee Name</th>
+					<th>Date</th>
+					<th>Time In</th>
+					<th>Time Out</th>
+					<th>Hours Worked</th>
+				</tr>
+		';
+		$total_quantity = 0;
+		foreach($result as $row)
+		{
+			$time_in = $row['time_in'];
+			$time_out = $row['time_out'];
+			// $daysWorked = $daysWorked + $row["date"];
+			$total      = strtotime($time_out) - strtotime($time_in);
+			$hours      = floor($total / 60 / 60);
+			$minutes    = round(($total - ($hours * 60 * 60)) / 60);
+			$hrWorked =$hours.'.'.$minutes;
+			$output .= '
+			<tr>
+				<td>'.$row['employee_name'].'</td>
+				<td> '.$row['date'].'</td>
+				<td> '.$time_in.'</td>
+				<td> '.$time_out.'</td>
+				<td> '.$hrWorked.'</td>
+			</tr>
+			';
+		}
+		return $output;
+}	
 
 
 

@@ -34,7 +34,7 @@ if(isset($_POST['btn_action']))
 						':employee_id'	=>	$_POST["employee_name"],
 						':password'	=>	$_POST["password"],
 						':status'	=>	$_POST["status"],
-						':time_in'	=>	date("h:i:sa"),
+						':time_in'	=>	date('h:i:s a'),
 						':date'	=>	date("Y/m/d"),
 						':remarks'	=>	$_POST["remarks"]
 					)
@@ -45,8 +45,9 @@ if(isset($_POST['btn_action']))
 					echo 'Time In Successfull';
 				}
 			}elseif($_POST["status"]=='out'){
+
 				$query = "
-				UPDATE dtr SET time_out=:time_out, date=:date,remarks=:remarks,status=:status WHERE employee_id=:employee_id AND password=:password
+				UPDATE dtr SET time_out=:time_out,remarks=:remarks,status=:status WHERE employee_id=:employee_id AND password=:password AND date=:date
 				";
 				$statement = $connect->prepare($query);
 				$statement->execute(
@@ -55,7 +56,7 @@ if(isset($_POST['btn_action']))
 						':employee_id'	=>	$_POST["employee_name"],
 						':password'	=>	$_POST["password"],
 						':status'	=>	$_POST["status"],
-						':time_out'	=>	date("h:i:sa"),
+						':time_out'	=>	date("h:i:s a"),
 						':date'	=>	date("Y/m/d"),
 						':remarks'	=>	$_POST["remarks"]
 					)

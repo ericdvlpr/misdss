@@ -89,7 +89,6 @@ include('includes/head.php');
 			 		<td>Remarks</td>
 			 	</tr>
 			 	<?php 
-			 	
 			 		$query = '';
 					$query .= "
 					SELECT * FROM dtr d JOIN employee_details e USING (employee_id)";

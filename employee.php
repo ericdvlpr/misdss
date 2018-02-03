@@ -27,7 +27,7 @@ include('includes/header.php');
                             	<h3 class="panel-title">Employee List</h3>
                             </div>
                             <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6" align="right">
-                            	<button type="button" name="add" id="add_button" data-toggle="modal" data-target="#employeeModal" class="btn btn-success btn-xs">Add</button>
+                            	<button type="button" name="add" id="add_employee" class="btn btn-success btn-xs">Add</button>
                         	</div>
                         </div>
                        

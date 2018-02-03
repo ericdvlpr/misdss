@@ -17,7 +17,10 @@ $(document).ready(function(){
         ],
         "pageLength": 10
     });
-
+    $('.modal').on('hidden.bs.modal', function(){
+                $(this).find('form')[0].reset();
+                $('#action').val("Add");
+            });
     $('#add_product').click(function(){
         $('#productModal').modal('show');
         $('#product_form')[0].reset();
@@ -210,7 +213,13 @@ $(document).ready(function(){
         }
     });
     //Employee Module
-
+    $('#add_employee').click(function(){
+        $('#employeeModal').modal('show');
+        $('#employee_form')[0].reset();
+        $('.modal-title').html("<i class='fa fa-plus'></i> Add Employee");
+        $('#action').val("Add");
+        $('#btn_action').val("Add");
+    });
 
     var employeedataTable = $('#employee_data').DataTable({
         "processing": true,
@@ -300,7 +309,7 @@ $(document).ready(function(){
     });
      //Payroll Module
     $('#add_button').click(function(){
-        // $('#category_form')[0].reset();
+        $('#employee_form')[0].reset();
         $('.modal-title').html("<i class='fa fa-plus'></i> Add Payroll");
         $('#action').val('Add');
         $('#btn_action').val('Add');

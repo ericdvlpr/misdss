@@ -794,6 +794,7 @@ $(document).ready(function(){
              $("#employee").css("display","none");
             $("#payroll").css("display","none");
             $(".inventory_report").attr('id','div1');
+            $("#dtr").css("display","none");
            
         }
         if(type=='sales'){
@@ -803,6 +804,7 @@ $(document).ready(function(){
             $("#employee").css("display","none");
             $("#payroll").css("display","none");
             $(".sales_report").attr('id','div1');
+            $("#dtr").css("display","none");
         }
         if(type=='employee'){
             $("#employee").css("display","");
@@ -811,6 +813,7 @@ $(document).ready(function(){
              $("#inventory").css("display","none");
              $("#payroll").css("display","none");
              $(".employee_report").attr('id','div1');
+             $("#dtr").css("display","none");
         }
         if(type=='payroll'){
             $("#payroll").css("display","");
@@ -819,6 +822,7 @@ $(document).ready(function(){
             $("#sales").css("display","none");
              $("#inventory").css("display","none");
              $(".payroll_report").attr('id','div1');
+             $("#dtr").css("display","none");
         }
         if(type=='dtr'){
             $("#dtr").css("display","");
@@ -828,9 +832,11 @@ $(document).ready(function(){
             $("#sales").css("display","none");
              $("#inventory").css("display","none");
              $(".dtr_report").attr('id','div1');
+              load_dtr_data();
         }
         if(type==''){
              $("#print").css("display","none");
+             $("#dtr").css("display","none");
              $("#payroll").css("display","none");
             $("#employee").css("display","none");
             $("#sales").css("display","none");
@@ -839,6 +845,32 @@ $(document).ready(function(){
         }
 
     });
-
+ function load_dtr_data(is_days)
+ {
+  var dataTable = $("#dtr_table").DataTable({
+   "processing":true,
+   "serverSide":true,
+   "searching": false,
+    "lengthChange": false,
+   "order":[],
+   "ajax":{
+    url:"report_fetch.php",
+    type:"POST",
+    data:{is_days:is_days}
+   }
+  });
+ }
+ $(document).on('change', '#days_filter', function(){
+      var no_of_days = $(this).val();
+       $('#dtr_table').DataTable().destroy();
+      if(no_of_days != '')
+      {
+        load_dtr_data(no_of_days);
+      }
+      else
+      {
+       load_dtr_data();
+      }
+  });
     
 });

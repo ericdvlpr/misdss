@@ -33,7 +33,7 @@ include('includes/header.php');
 						<button type="button" name="submit" class="btn btn-default" id="submit">Submit</button>
 					</form>
 					<div class="btn-group pull-right" id="print"  style="display: none ;">
-                        <button class="btn btn-default" id="print" onclick="printContent('div1')"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> PRINT</button>
+                     <button class="btn btn-default" id="print" onclick="printContent('div1')"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> PRINT</button>
 			        </div>
 			        <br />
 					<div class="col-md-12" id="employee" style="display: none ;">
@@ -81,13 +81,36 @@ include('includes/header.php');
 						</div>
 					</div>
 					<div class="col-md-12" id="dtr" style="display: none;">
+						<div class="btn-group">
+						     <select name="days_filter" id="days_filter" class="form-control">
+						      <option value="">Select Days</option>
+						      <option value="7">Weekly</option>
+						       <option value="30">Monthly</option>
+						       <option value="365">Yearly</option>
+						     </select>
+					    </div>
 						<div class="panel panel-default dtr_report">
 							<div class="panel-heading">
 								<strong>DAILY TIME RECORD</strong>
 
 							</div>
-							<div class="panel-body" align="center">
-								<?php echo get_daily_time_record($connect); ?>
+							<div class="panel-body"  align="center">
+								<?php //echo get_daily_time_record($connect); ?>
+								<div class="table-responsive">
+									<table id="dtr_table" class="table table-bordered table-striped">
+										<thead>
+											<tr>
+												<th>Employee Name</th>
+												<th>Date</th>
+												<th>Time In</th>
+												<th>Time Out</th>
+												<th>Hours Worked</th>
+											</tr>
+										</thead>
+										<tbody></tbody>
+										</table>
+								</div>
+
 							</div>
 						</div>
 					</div>

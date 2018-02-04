@@ -482,19 +482,15 @@ SELECT * FROM product JOIN category USING (category_id) JOIN brand USING (brand_
 			<td align="right">&nbsp;</td>
 			<td align="right">&nbsp;</td>
 			<td align="right">&nbsp;</td>
-			<td align="right">&nbsp;</td>
 			<td align="right"><b>Total</b></td>
 			<td align="right"><b>Php'.number_format($total_quantity,2).'</b></td>
 		</tr></table></div>
 		';
 		return $output;
 	}
-function get_daily_time_record($connect) {
-	$query = '
-	SELECT * FROM dtr JOIN employee_details USING (employee_id)';
-		$statement = $connect->prepare($query);
-		$statement->execute();
-		$result = $statement->fetchAll();
+function get_daily_time_record($connect,$no_days) {
+		$query = '
+		SELECT * FROM dtr JOIN employee_details USING (employee_id)';
 		$output = '
 		<div class="table-responsive">
 			<table class="table table-bordered table-striped">
@@ -506,6 +502,10 @@ function get_daily_time_record($connect) {
 					<th>Hours Worked</th>
 				</tr>
 		';
+		$statement = $connect->prepare($query);
+		$statement->execute();
+		$result = $statement->fetchAll();
+		
 		$total_quantity = 0;
 		foreach($result as $row)
 		{
@@ -526,7 +526,7 @@ function get_daily_time_record($connect) {
 			</tr>
 			';
 		}
-		return $output;
+		echo json_encode($output);
 }	
 
 

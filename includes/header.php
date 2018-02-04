@@ -14,7 +14,7 @@
 		<link rel="stylesheet" href="css/dataTables.bootstrap.min.css" />
 		
 	</head>
-	<body>
+	<body style="background-color:#D2D7D3;">
 	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container">
 		    <div class="navbar-header">
@@ -33,6 +33,7 @@
 			if($_SESSION['type'] == 'master')
 			{
 			?>
+				<li><a href="index.php"><center><span class="glyphicon glyphicon-home" aria-hidden="true"></span><br />DashBoard</center></a></li>
 				<li><a href="user.php"><center><span class="glyphicon glyphicon-user" aria-hidden="true"></span><br />User</center></a></li>
 				<li><a href="category.php"><center><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span><br />Category</center></a></li>
 				<li><a href="brand.php"><center><span class="glyphicon glyphicon-tags" aria-hidden="true"></span><br />Brand</center></a></li>
@@ -45,17 +46,20 @@
 			<?php
 			}elseif($_SESSION['type'] == 'sale')
 			{?>
+				<li><a href="index.php"><center><span class="glyphicon glyphicon-home" aria-hidden="true"></span><br />DashBoard</center></a></li>
 				<li><a href="order.php"><center><span class="glyphicon glyphicon-plus-sign  " aria-hidden="true"></span><br />Order</center></a></li>
 			
 			<?php
 			}elseif($_SESSION['type'] == 'payroll')
 			{?>
+				<li><a href="index.php"><center><span class="glyphicon glyphicon-home" aria-hidden="true"></span><br />DashBoard</center></a></li>
 				<li><a href="payroll.php"><center><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span><br />Payroll</center></a></li>
 				<li><a href="employee.php"><center><span class="glyphicon glyphicon-file" aria-hidden="true"></span><br />Employee</center></a></li>
 		
 			<?php 
 				}elseif($_SESSION['type'] == 'inventory')
 			{?>
+				<li><a href="index.php"><center><span class="glyphicon glyphicon-home" aria-hidden="true"></span><br />DashBoard</center></a></li>
 				<li><a href="category.php"><center><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span><br />Category</center></a></li>
 				<li><a href="brand.php"><center><span class="glyphicon glyphicon-tags" aria-hidden="true"></span><br />Brand</center></a></li>
 				<li><a href="product.php"><center><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span><br />Product</center></a></li>
@@ -74,6 +78,6 @@
 
 		</div>
 			</nav>
-		<div class="container">
+		<div class="container" style="background-color: white;margin-top: -20px;padding-top: 15px;">
 			
 			

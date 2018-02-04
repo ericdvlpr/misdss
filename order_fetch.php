@@ -72,7 +72,7 @@ foreach($result as $row)
 	$sub_array = array();
 	$sub_array[] = $row['inventory_order_id'];
 	$sub_array[] = $row['inventory_order_name'];
-	$sub_array[] = $row['inventory_order_total'];
+	$sub_array[] = 'Php '.number_format($row['inventory_order_total']);
 	$sub_array[] = $payment_status;
 	$sub_array[] = $status;
 	$sub_array[] = $row['inventory_order_date'];

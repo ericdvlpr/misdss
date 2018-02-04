@@ -1,4 +1,9 @@
+body{
+	background-color:gray;
+}
 #brand{
-	background-color: #000000
-;
+	background-color: #000000;
+}
+.user-heading{
+	background-color: #1E8BC3;
 }

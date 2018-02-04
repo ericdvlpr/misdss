@@ -51,10 +51,10 @@ foreach($result as $row)
 	$sub_array[] = $row['employee_name'];
 	$sub_array[] = $row['hrsworked'];
 	$sub_array[] = $row['daysworked'];
-	$sub_array[] = $row['sss'];
-	$sub_array[] = $row['pagibig'];
-	$sub_array[] = $row['philhealth'];
-	$sub_array[] = $row['netincome'];
+	$sub_array[] = 'Php '.number_format($row['sss']);
+	$sub_array[] = 'Php '.number_format($row['pagibig']);
+	$sub_array[] = 'Php '.number_format($row['philhealth']);
+	$sub_array[] = 'Php '.number_format($row['netincome']);
 	$sub_array[] = $row['monthof'];
 	$sub_array[] ='<button class="btn btn-default viewdtr" id="'.$row["employee_id"].'">View DTR</button>';
 	

@@ -190,7 +190,7 @@ function count_total_order_value($connect)
 	$result = $statement->fetchAll();
 	foreach($result as $row)
 	{
-		return number_format($row['total_order_value'], 2);
+		return 'Php '.number_format($row['total_order_value']);
 	}
 }
 
@@ -210,7 +210,7 @@ function count_total_cash_order_value($connect)
 	$result = $statement->fetchAll();
 	foreach($result as $row)
 	{
-		return number_format($row['total_order_value'], 2);
+		return number_format($row['total_order_value']);
 	}
 }
 
@@ -278,9 +278,9 @@ function get_user_wise_total_order($connect)
 	$output .= '
 	<tr>
 		<td align="right"><b>Total</b></td>
-		<td align="right"><b>$ '.$total_order.'</b></td>
-		<td align="right"><b>$ '.$total_cash_order.'</b></td>
-		<td align="right"><b>$ '.$total_credit_order.'</b></td>
+		<td align="right"><b>Php '.$total_order.'</b></td>
+		<td align="right"><b>Php '.$total_cash_order.'</b></td>
+		<td align="right"><b>Php '.$total_credit_order.'</b></td>
 	</tr></table></div>
 	';
 	return $output;
@@ -391,7 +391,7 @@ function get_total_sales($connect)
 {
 	$query = '
 	SELECT *
-	FROM inventory_order 
+	FROM inventory_order WHERE inventory_order_date BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()
 	';
 	$statement = $connect->prepare($query);
 	$statement->execute();
@@ -402,8 +402,6 @@ function get_total_sales($connect)
 <tr>
 				<th>Order ID</th>
 				<th>Customer Name</th>
-				<th>Address</th>
-				<th>Payment Status</th>
 				<th>Order Date</th>
 				<th>Total Order</th>
 			</tr>
@@ -417,17 +415,13 @@ function get_total_sales($connect)
 		<tr>
 			<td>'.$row['inventory_order_id'].'</td>
 			<td> '.$row["inventory_order_name"].'</td>
-			<td> '.$row["inventory_order_address"].'</td>
-			<td> '.$row["payment_status"].'</td>
 			<td> '.$row["inventory_order_date"].'</td>
-			<td align="right"> '.number_format($row["inventory_order_total"],2).'</td>
+			<td align="right">Php '.number_format($row["inventory_order_total"],2).'</td>
 		</tr>
 		';
 	}
 	$output .= '
 	<tr>
-		<td align="right">&nbsp;</td>
-		<td align="right">&nbsp;</td>
 		<td align="right">&nbsp;</td>
 		<td align="right">&nbsp;</td>
 		<td align="right"><b>Total</b></td>
@@ -439,7 +433,7 @@ function get_total_sales($connect)
 function get_total_inventory($connect)
 {
 	$query = '
-SELECT * FROM product JOIN category USING (category_id) JOIN brand USING (brand_id)
+SELECT * FROM product JOIN category USING (category_id) JOIN brand USING (brand_id) ORDER BY product_id DESC LIMIT 10 
 	';
 	$statement = $connect->prepare($query);
 	$statement->execute();
@@ -448,13 +442,9 @@ SELECT * FROM product JOIN category USING (category_id) JOIN brand USING (brand_
 	<div class="table-responsive">
 		<table class="table table-bordered table-striped">
 			<tr>
-				<th>Product ID</th>
-				<th>Category</th>
-				<th>Brand</th>
-				<th>Product Name</th>
-				<th>Description</th>
-				<th>Quantity</th>
-				<th>Base Price</th>
+				<th width="30">Product ID</th>
+				<th width="30">Product Name</th>
+				<th width="30">Description</th>
 			</tr>
 	';
 	$total_quantity = 0;
@@ -465,26 +455,14 @@ SELECT * FROM product JOIN category USING (category_id) JOIN brand USING (brand_
 		$total_quantity = $total_quantity + $row["product_quantity"];
 		$output .= '
 		<tr>
-			<td>'.$row['product_id'].'</td>
-			<td> '.$row["category_name"].'</td>
-			<td> '.$row["brand_name"].'</td>
-			<td> '.$row["product_name"].'</td>
-			<td> '.$row["product_description"].'</td>
-			<td align="right"> '.$row["product_quantity"].'</td>
-			<td align="right"> '.$row["product_base_price"].'</td>
+			<td  width="30">'.$row['product_id'].'</td>
+			<td  width="30"> '.$row["product_name"].'</td>
+			<td  width="30"> '.$row["product_description"].'</td>
 		</tr>
 		';
 	}
 	$output .= '
-		<tr>
-			<td align="right">&nbsp;</td>
-			<td align="right">&nbsp;</td>
-			<td align="right">&nbsp;</td>
-			<td align="right">&nbsp;</td>
-			<td align="right">&nbsp;</td>
-			<td align="right"><b>Total</b></td>
-			<td align="right"><b>Php'.number_format($total_quantity,2).'</b></td>
-		</tr></table></div>
+		</table></div>
 		';
 		return $output;
 	}

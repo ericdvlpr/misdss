@@ -12,7 +12,6 @@ include('includes/header.php');
 
 ?>
 	<br />
-	<div class="row">
 		<div class="panel panel-default">
 			<div class="panel-heading"><h3 >REPORT</h3></div>
 				 <div class="panel-body">
@@ -117,7 +116,6 @@ include('includes/header.php');
 				</div>
 				</div>
 			</div>
-		</div>
 		
 
 <?php

@@ -11,7 +11,7 @@ if(isset($_POST['btn_action']))
 		
 		$query = "
 		INSERT INTO employee_details (employee_name, employee_hrrate, employee_dlyrate, employee_perday, employee_passcode) 
-		VALUES (:employee_name, :employee_hrrate, :employee_dlyrate, :employee_perday, :employee_passcode)
+		VALUES (:employee_name, :employee_hrrate, :employee_dlyrate, :employee_perday, :employee_passcode,employee_position:employee_position)
 		";	
 		$statement = $connect->prepare($query);
 		$statement->execute(
@@ -20,7 +20,8 @@ if(isset($_POST['btn_action']))
 				':employee_hrrate'		=>	$_POST["employee_hrrate"],
 				':employee_dlyrate'		=>	$_POST["employee_dlyrate"],
 				':employee_perday'		=>	$_POST["employee_hrperday"],
-				':employee_passcode'	=>  $_POST["employee_passcode"]	
+				':employee_passcode'	=>  $_POST["employee_passcode"],	
+				':employee_position'	=>  $_POST["employee_position"]	
 			)
 		);
 		$result = $statement->fetchAll();
@@ -49,6 +50,8 @@ if(isset($_POST['btn_action']))
 			$output['employee_dlyrate']=$row['employee_dlyrate'];
 			$output['employee_perday']=$row['employee_perday'];
 			$output['employee_passcode']=$row['employee_passcode'];
+			$output['employee_position']=$row['employee_position'];
+
 		}
 		echo json_encode($output);
 	}
@@ -62,7 +65,8 @@ if(isset($_POST['btn_action']))
 				employee_hrrate		=	'".$_POST["employee_hrrate"]."',
 				employee_dlyrate	=	'".$_POST["employee_dlyrate"]."',
 				employee_perday		=	'".$_POST["employee_hrperday"]."',
-				employee_passcode	=  '".$_POST["employee_passcode"]."'
+				employee_passcode	=  '".$_POST["employee_passcode"]."',
+				employee_position	=  '".$_POST["employee_position"]."'
 				WHERE employee_id = '".$_POST["employee_id"]."'	
 			";
 		}
@@ -75,6 +79,7 @@ if(isset($_POST['btn_action']))
 				employee_dlyrate	=	'".$_POST["employee_dlyrate"]."',
 				employee_perday		=	'".$_POST["employee_hrperday"]."',
 				employee_passcode	=  '".$_POST["employee_passcode"]."',
+				employee_position	=  '".$_POST["employee_position"]."'
 				WHERE employee_id = '".$_POST["employee_id"]."'	
 			";
 		}

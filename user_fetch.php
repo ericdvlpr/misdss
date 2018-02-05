@@ -9,7 +9,7 @@ $query = '';
 $output = array();
 
 $query .= "
-SELECT * FROM user_details 
+SELECT * FROM user_details ud LEFT JOIN employee_details ed ON ud.user_assign = ed.employee_id 
 ";
 
 // if(isset($_POST["search"]["value"]))
@@ -58,6 +58,8 @@ foreach($result as $row)
 	$sub_array[] = $row['user_id'];
 	$sub_array[] = $row['user_email'];
 	$sub_array[] = $row['user_name'];
+	$sub_array[] = $row['employee_name'];
+	$sub_array[] = $row['user_type'];
 	$sub_array[] = $status;
 	$sub_array[] = '<button type="button" name="update" id="'.$row["user_id"].'" class="btn btn-warning btn-xs update">Update</button>';
 	$data[] = $sub_array;

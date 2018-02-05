@@ -9,8 +9,8 @@ if(isset($_POST['btn_action']))
 	if($_POST['btn_action'] == 'Add')
 	{
 		$query = "
-		INSERT INTO user_details (user_email, user_password, user_name, user_type, user_status) 
-		VALUES (:user_email, :user_password, :user_name, :user_type, :user_status)
+		INSERT INTO user_details (user_email, user_password, user_name, user_type, user_status,user_assign) 
+		VALUES (:user_email, :user_password, :user_name, :user_type, :user_status,:user_assign)
 		";	
 		$statement = $connect->prepare($query);
 		$statement->execute(
@@ -18,13 +18,21 @@ if(isset($_POST['btn_action']))
 				':user_email'		=>	$_POST["user_email"],
 				':user_password'	=>	password_hash($_POST["user_password"], PASSWORD_DEFAULT),
 				':user_name'		=>	$_POST["user_name"],
-				':user_type'		=>	'user',
+				':user_type'		=>	$_POST["user_type"],
+				':user_assign'		=>	$_POST["user_assign"],
 				':user_status'		=>	'active'
 			)
 		);
 		$result = $statement->fetchAll();
+		
 		if(isset($result))
 		{
+			if(isset($_POST["user_assign"])){
+			$query = "UPDATE employee_details SET 
+				employee_account = 1 WHERE employee_id ='".$_POST["user_assign"]."' ";
+			$statement = $connect->prepare($query);
+			$statement->execute();
+		}
 			echo 'New User Added';
 		}
 	}
@@ -44,6 +52,8 @@ if(isset($_POST['btn_action']))
 		{
 			$output['user_email'] = $row['user_email'];
 			$output['user_name'] = $row['user_name'];
+			$output['user_type'] = $row['user_type'];
+			$output['user_assign']	=$row["user_assign"]; 
 		}
 		echo json_encode($output);
 	}
@@ -55,7 +65,9 @@ if(isset($_POST['btn_action']))
 			UPDATE user_details SET 
 				user_name = '".$_POST["user_name"]."', 
 				user_email = '".$_POST["user_email"]."',
-				user_password = '".password_hash($_POST["user_password"], PASSWORD_DEFAULT)."' 
+				user_password = '".password_hash($_POST["user_password"], PASSWORD_DEFAULT)."',
+				user_type	='".$_POST["user_type"]."',
+				user_assign	='".$_POST["user_assign"]."' 
 				WHERE user_id = '".$_POST["user_id"]."'
 			";
 		}
@@ -64,15 +76,25 @@ if(isset($_POST['btn_action']))
 			$query = "
 			UPDATE user_details SET 
 				user_name = '".$_POST["user_name"]."', 
-				user_email = '".$_POST["user_email"]."'
+				user_email = '".$_POST["user_email"]."',
+				user_type	='".$_POST["user_type"]."',
+				user_assign	='".$_POST["user_assign"]."' 
 				WHERE user_id = '".$_POST["user_id"]."'
 			";
+			
 		}
+
 		$statement = $connect->prepare($query);
 		$statement->execute();
 		$result = $statement->fetchAll();
 		if(isset($result))
 		{
+			if(isset($_POST["user_assign"])){
+				$query = "UPDATE employee_details SET 
+					employee_account = 1 WHERE employee_id ='".$_POST["user_assign"]."' ";
+				$statement = $connect->prepare($query);
+				$statement->execute();
+			}
 			echo 'User Details Edited';
 		}
 	}

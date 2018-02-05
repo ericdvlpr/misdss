@@ -19,6 +19,21 @@ function fill_category_list($connect)
 	return $output;
 }
 
+function fill_employee_list($connect)
+{
+	$query = "SELECT * FROM employee_details 
+	WHERE employee_status = 'active' 
+	AND employee_account = 0";
+	$statement = $connect->prepare($query);
+	$statement->execute();
+	$result = $statement->fetchAll();
+	$output = '<option value="">Select Employee</option>';
+	foreach($result as $row)
+	{
+		$output .= '<option value="'.$row["employee_id"].'">'.$row["employee_name"].'</option>';
+	}
+	return $output;
+}
 function fill_brand_list($connect, $category_id)
 {
 	$query = "SELECT * FROM brand 
@@ -289,7 +304,7 @@ function get_total_payroll($connect)
 {
 	$query = '
 	SELECT *
-	FROM payroll 
+	FROM payroll LEFT JOIN employee_details USING (employee_id)
 	';
 	$statement = $connect->prepare($query);
 	$statement->execute();
@@ -300,6 +315,7 @@ function get_total_payroll($connect)
 			<tr>
 				<th>Employee ID</th>
 				<th>Employee Name</th>
+				<th>Position</th>
 				<th>Hours Worked</th>
 				<th>Days Worked</th>
 				<th>SSS</th>
@@ -320,6 +336,7 @@ function get_total_payroll($connect)
 		<tr>
 			<td>'.$row['employee_id'].'</td>
 			<td align="right"> '.$row["employee_name"].'</td>
+			<td align="right"> '.$row["employee_position"].'</td>
 			<td align="right"> '.$row["hrsworked"].'</td>
 			<td align="right"> '.$row["daysworked"].'</td>
 			<td align="right">Php '.$row["sss"].'</td>
@@ -339,6 +356,7 @@ function get_total_payroll($connect)
 	$output .= '
 	<tr>
 		<td align="right"><b>Total</b></td>
+		<td align="right">&nbsp;</td>
 		<td align="right">&nbsp;</td>
 		<td align="right"><b>'.$total_hours_worked.'</b></td>
 		<td align="right"><b>'.$total_days_worked.'</b></td>
@@ -368,6 +386,7 @@ function get_total_employee($connect)
 				<th>Hourly Rate</th>
 				<th>Daily Rate</th>
 				<th>Hours Per Day</th>
+				<th>Position</th>
 			</tr>
 	';
 	foreach($result as $row)
@@ -379,6 +398,7 @@ function get_total_employee($connect)
 			<td> '.$row["employee_hrrate"].'</td>
 			<td> '.$row["employee_dlyrate"].'</td>
 			<td> '.$row["employee_perday"].'</td>
+			<td> '.$row["employee_position"].'</td>
 		</tr>
 		';
 	}
@@ -474,6 +494,7 @@ function get_daily_time_record($connect,$no_days) {
 			<table class="table table-bordered table-striped">
 				<tr>
 					<th>Employee Name</th>
+					<th>Position</th>
 					<th>Date</th>
 					<th>Time In</th>
 					<th>Time Out</th>
@@ -497,6 +518,7 @@ function get_daily_time_record($connect,$no_days) {
 			$output .= '
 			<tr>
 				<td>'.$row['employee_name'].'</td>
+				<td>'.$row['employee_position'].'</td>
 				<td> '.$row['date'].'</td>
 				<td> '.$time_in.'</td>
 				<td> '.$time_out.'</td>

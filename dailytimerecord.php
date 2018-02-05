@@ -83,6 +83,7 @@ include('includes/head.php');
 			<table class="table table-striped" name='dtr_data'  id='dtr_data'>
 			 	<tr>
 			 		<td>Employee Name</td>
+			 		<td>Position</td>
 			 		<td>Date</td>
 			 		<td>Time</td>
 			 		<td>Status</td>
@@ -111,6 +112,7 @@ include('includes/head.php');
 						}
 						echo "<tr>
 								<td>".$row['employee_name']."</td>
+								<td>".$row['employee_position']."</td>
 								<td>".$row['date']."</td>
 								<td>".$time."</td>
 								<td>".$status."</td>

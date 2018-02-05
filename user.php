@@ -2,6 +2,7 @@
 //user.php
 
 include('database_connection.php');
+include('function.php');
 
 if(!isset($_SESSION["type"]))
 {
@@ -40,7 +41,9 @@ include('includes/header.php');
 									<tr>
 										<th>ID</th>
 										<th>Email</th>
-										<th>Name</th>
+                    <th>Name</th>
+                    <th>Assign</th>
+                    <th>Access</th>
 										<th>Status</th>
 										<th>Edit</th>
 									</tr>
@@ -53,26 +56,41 @@ include('includes/header.php');
         </div>
         <div id="userModal" class="modal fade">
         	<div class="modal-dialog">
-        		<form method="post" id="user_form">
-        			<div class="modal-content">
-        			<div class="modal-header">
-        				<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title"><i class="fa fa-plus"></i> Add User</h4>
-        			</div>
-        			<div class="modal-body">
-        				<div class="form-group">
-							<label>Enter User Name</label>
-							<input type="text" name="user_name" id="user_name" class="form-control" required />
-						</div>
-						<div class="form-group">
-							<label>Enter User Email</label>
-							<input type="email" name="user_email" id="user_email" class="form-control" required />
-						</div>
-						<div class="form-group">
-							<label>Enter User Password</label>
-							<input type="password" name="user_password" id="user_password" class="form-control" required />
-						</div>
-        			</div>
+              		<form method="post" id="user_form">
+              			<div class="modal-content">
+              			<div class="modal-header">
+              				<button type="button" class="close" data-dismiss="modal">&times;</button>
+      						<h4 class="modal-title"><i class="fa fa-plus"></i> Add User</h4>
+              			</div>
+              			<div class="modal-body">
+                    		<div class="form-group">
+            							<label>Enter User Name</label>
+            							<input type="text" name="user_name" id="user_name" class="form-control" required />
+            						</div>
+            						<div class="form-group">
+            							<label>Enter User Email</label>
+            							<input type="email" name="user_email" id="user_email" class="form-control" required />
+            						</div>
+            						<div class="form-group">
+            							<label>Enter User Password</label>
+            							<input type="password" name="user_password" id="user_password" class="form-control" required />
+            						</div>
+                        <div class="form-group">
+                          <label>Assign Employee</label>
+                           <select name="user_assign" id="user_assign" class="form-control" required />
+                           <?php echo fill_employee_list($connect); ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                          <label>Enter User Access</label>
+                           <select name="user_type" id="user_type" class="form-control" required />
+                                  <option value="">Please Select</option>
+                                  <option value="sale">Sales</option>
+                                  <option value="payroll">Payroll</option>
+                                  <option value="inventory">Inventory</option>
+                            </select>
+                        </div>
+        			   </div>
         			<div class="modal-footer">
         				<input type="hidden" name="user_id" id="user_id" />
         				<input type="hidden" name="btn_action" id="btn_action" />

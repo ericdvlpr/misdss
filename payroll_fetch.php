@@ -9,7 +9,7 @@ $query = '';
 $output = array();
 
 $query .= "
-SELECT * FROM payroll 
+SELECT * FROM payroll LEFT JOIN employee_details USING (employee_id)
 ";
 
 // if(isset($_POST["search"]["value"]))
@@ -49,6 +49,7 @@ foreach($result as $row)
 	$sub_array = array();
 	$sub_array[] = $row['employee_id'];
 	$sub_array[] = $row['employee_name'];
+	$sub_array[] = $row['employee_position'];
 	$sub_array[] = $row['hrsworked'];
 	$sub_array[] = $row['daysworked'];
 	$sub_array[] = 'Php '.number_format($row['sss']);

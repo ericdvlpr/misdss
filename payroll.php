@@ -40,6 +40,7 @@ include('includes/header.php');
 									<tr>
 										<th>ID</th>
 										<th>Employee Name</th>
+										<th>Position</th>
 										<th>Hours Worked</th>
 										<th>Days Worked</th>
 										<th>SSS</th>

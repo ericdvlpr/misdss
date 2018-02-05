@@ -43,7 +43,8 @@ include('includes/header.php');
 										<th>Hourly Rate</th>
 										<th>Daily Rate</th>
 										<th>Hours per day</th>
-										<th>Passcode</th>
+                    <th>Passcode</th>
+										<th>Position</th>
 										<th>Edit</th>
 									</tr>
 								</thead>
@@ -82,6 +83,16 @@ include('includes/header.php');
 							<label>Enter Employee Hours per Day</label>
 							<input type="number" name="employee_hrperday" id="employee_hrperday" class="form-control" required />
 						</div>
+            <div class="form-group">
+              <label>Enter Employee Position</label>
+              <select name="employee_position" id="employee_position" class="form-control" required />
+                    <option value="">Please Select</option>
+                    <option value="Secretary">Secretary</option>
+                    <option value="Inventory Clerk">Inventory Clerk</option>
+                    <option value="Sales">Sales</option>
+                    <option value="Payroll">Payroll</option>
+              </select>
+            </div>
         			</div>
         			<div class="modal-footer">
         				<input type="hidden" name="employee_id" id="employee_id" />

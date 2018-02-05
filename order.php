@@ -131,13 +131,17 @@ $(document).ready(function(){
         {
             var html = '';
             html += '<span id="row'+count+'"><div class="row">';
-            html += '<div class="col-md-8">';
+            html += '<div class="col-md-7">';
             html += '<select name="product_id[]" id="product_id'+count+'" class="form-control selectpicker" data-live-search="true" required>';
+            html += '<option value="">Please Select</option>';
             html += '<?php echo fill_product_list($connect); ?>';
             html += '</select><input type="hidden" name="hidden_product_id[]" id="hidden_product_id'+count+'" />';
             html += '</div>';
-            html += '<div class="col-md-3">';
-            html += '<input type="text" name="quantity[]" class="form-control" required />';
+            html += '<div class="col-md-2">';
+            html += '<input type="number" id="available" class="form-control" readonly />';
+            html += '</div>';
+            html += '<div class="col-md-2">';
+            html += '<input type="number" name="quantity[]" class="form-control" required />';
             html += '</div>';
             html += '<div class="col-md-1">';
             if(count == '')

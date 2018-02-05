@@ -53,6 +53,7 @@ foreach($result as $row)
 	$sub_array[] = $row['employee_dlyrate'];
 	$sub_array[] = $row['employee_perday'];
 	$sub_array[] = $row['employee_passcode'];
+	$sub_array[] = $row['employee_position'];
 	$sub_array[] = '<button type="button" name="update" id="'.$row["employee_id"].'" class="btn btn-warning btn-xs update">Update</button>';
 	$data[] = $sub_array;
 }

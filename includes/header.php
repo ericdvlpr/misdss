@@ -8,7 +8,7 @@
 		
 		<link rel="stylesheet" href="css/bootstrap.min.css" />
 			<link rel="stylesheet" href="css/datepicker.css">
-	
+	<link href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
 	<link rel="stylesheet" href="css/bootstrap-select.min.css">
 		
 		<link rel="stylesheet" href="css/dataTables.bootstrap.min.css" />

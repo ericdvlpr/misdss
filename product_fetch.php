@@ -59,7 +59,7 @@ foreach($result as $row)
 	$sub_array[] = $row['category_name'];
 	$sub_array[] = $row['brand_name'];
 	$sub_array[] = $row['product_name'];
-	$sub_array[] = available_product_quantity($connect, $row["product_id"]) . ' ' . $row["product_unit"];
+	$sub_array[] =  $row["product_quantity"] . ' ' . $row["product_unit"];
 	$sub_array[] = $row['user_name'];
 	$sub_array[] = $status;
 	$sub_array[] = '<button type="button" name="view" id="'.$row["product_id"].'" class="btn btn-info btn-xs view">View</button>';

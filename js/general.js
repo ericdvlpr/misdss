@@ -614,6 +614,9 @@ $(document).ready(function(){
         "pageLength": 10
     });
     //Order Module
+     $('#inventory_order_date').datepicker().focus(function() {
+        $(".ui-datepicker-prev").remove();
+      });
     $('#inventory_order_date').datepicker({
             format: "yyyy-mm-dd",
             autoclose: true

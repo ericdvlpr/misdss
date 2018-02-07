@@ -1,6 +1,11 @@
 $(document).ready(function(){
     $('input:password').attr("maxlength",11);
 
+
+       // $('#date').datepicker().focus(function() {
+         //   $(".ui-datepicker-prev").remove();
+        //  });
+
     //Product Module
     var productdataTable = $('#product_data').DataTable({
         "processing":true,

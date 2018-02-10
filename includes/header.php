@@ -10,7 +10,7 @@
 			<link rel="stylesheet" href="css/datepicker.css">
 	
 	<link rel="stylesheet" href="css/bootstrap-select.min.css">
-	<link href="css/jquery-ui.min.css" rel="stylesheet" type="text/css"/>	
+	<!-- <link href="css/jquery-ui.min.css" rel="stylesheet" type="text/css"/>	 -->
 		<link rel="stylesheet" href="css/dataTables.bootstrap.min.css" />
 		
 	</head>

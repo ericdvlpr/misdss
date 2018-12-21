@@ -29,6 +29,7 @@ while($row = mysqli_fetch_array($result)) {
 		$sub_array = array();
 		$sub_array[] = $row["employee_name"];
 		$sub_array[] = $row["date"];
+		$sub_array[] = $row["employee_position"];
 		$sub_array[] = $time_in;
 		$sub_array[] = $time_out;
 		$sub_array[] = $hrWorked;

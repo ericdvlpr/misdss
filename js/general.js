@@ -1,5 +1,40 @@
 $(document).ready(function(){
     $('input:password').attr("maxlength",11);
+    toggleAlert();
+
+    function toggleAlert(){
+       var action = 'check quantity';
+        $.ajax({
+            url:"product_action.php",
+            method:"POST",
+            data:{btn_action:action},
+            dataType:"json",
+            success:function(data){
+               if(data.count > 0){
+               $('#message_alert').fadeIn().html('<div class="alert alert-danger">'+data.productName+' has 0 quantity</div>');
+               }
+
+            }
+        })
+
+    }
+    $(document).on('blur', 'input[name^="quantity[]"]', function(){
+
+            //keyup, keydown, keypress, focus
+            var product_quantity =  $(this).val();
+
+            var _this = $(this);
+           var product_available = _this.closest('tr').find('input[name^="available[]"]').val();
+            if(product_quantity>product_available){
+                        alert('Invalid quantity');
+                        $('#action').attr("disabled","disabled");
+                    }else if(parseInt(product_quantity,10) == '0'){
+                        alert('Invalid quantity');
+                        $('#action').attr("disabled","disabled");
+                    }else{
+                         $('#action').removeAttr("disabled");
+                    }
+                });
 
     //Product Module
     var productdataTable = $('#product_data').DataTable({
@@ -34,6 +69,7 @@ $(document).ready(function(){
     $('.modal').on('hidden.bs.modal', function(){
                 $(this).find('form')[0].reset();
                 $('#action').val("Add");
+                 window.location.reload();
     });
     $('#add_product').click(function(){
         $('#productModal').modal('show');
@@ -140,7 +176,7 @@ $(document).ready(function(){
     });
     //User Module
     $('#add_button').click(function(){
-        $('#user_form')[0].reset();
+        //$('#user_form')[0].reset();
         $('.modal-title').html("<i class='fa fa-plus'></i> Add User");
         $('#action').val("Add");
         $('#btn_action').val("Add");
@@ -325,11 +361,11 @@ $(document).ready(function(){
         }
     });
      //Payroll Module
-    $('#add_button').click(function(){
+    $('#add_payroll').click(function(){
         $('#employee_form')[0].reset();
         $('.modal-title').html("<i class='fa fa-plus'></i> Add Payroll");
         $('#action').val('Add');
-        $('#btn_action').val('Add');
+        // $('#btn_action').val('Addpayroll');
     });
     $('#employee_name').change(function(){
         var employee_id = $(this).val();
@@ -341,8 +377,7 @@ $(document).ready(function(){
             dataType:"json",
             success:function(data)
             {
-                // $('#employee_name').val(data.employee_name);
-                alert(data);
+                //$('#employee_name').val(data.employee_name);
             }
         })
     });
@@ -385,7 +420,6 @@ $(document).ready(function(){
             }
         })
     });
-
     var payrolldataTable = $('#payroll_data').DataTable({
         "processing":true,
         "serverSide":true,
@@ -614,13 +648,13 @@ $(document).ready(function(){
         "pageLength": 10
     });
     //Order Module
-     $('#inventory_order_date').datepicker().focus(function() {
-        $(".ui-datepicker-prev").remove();
-      });
-    $('#inventory_order_date').datepicker({
-            format: "yyyy-mm-dd",
-            autoclose: true
-        });
+    //  $('#inventory_order_date').datepicker().focus(function() {
+    //     $(".ui-datepicker-prev").remove();
+    //   });
+    // $('#inventory_order_date').datepicker({
+    //         format: "yyyy-mm-dd",
+    //         autoclose: true
+    //     });
     var orderdataTable = $('#order_data').DataTable({
             "processing":true,
             "serverSide":true,
@@ -727,7 +761,7 @@ $(document).ready(function(){
              $('#inventory_order_name').val(data.inventory_order_name);
              $('#inventory_order_date').val(data.inventory_order_date);
              $('#inventory_order_address').val(data.inventory_order_address);
-             $('#span_product_details').html(data.product_details);
+             $('#product_table').html(data.product_details);
              $('#payment_status').val(data.payment_status);
              $('.modal-title').html("<i class='fa fa-pencil-square-o'></i> Edit Order");
              $('#inventory_order_id').val(inventory_order_id);
@@ -795,11 +829,13 @@ $(document).ready(function(){
               $('#employee_name').val(data.employeeName);
               $('#employee_hrwk').val(data.hrWorked);
               $('#employee_dyswk').val(data.daysWorked);
+              $('#employee_absent').val(data.absent);
+              $('#employee_late').val(data.late);
+              $('#employee_gincome').val(data.grossincome);
               $('#employee_sss').val(data.sss);
               $('#employee_phhealth').val(data.philhealth);
               $('#employee_pgibig').val(data.pagibig);
               $('#employee_netincome').val(data.netIncome);
-              
             }
         })
     });
@@ -823,6 +859,8 @@ $(document).ready(function(){
             $("#payroll").css("display","none");
             $(".sales_report").attr('id','div1');
             $("#dtr").css("display","none");
+            load_order_data('order','no');
+            load_order_total();
         }
         if(type=='employee'){
             $("#employee").css("display","");
@@ -841,6 +879,8 @@ $(document).ready(function(){
              $("#inventory").css("display","none");
              $(".payroll_report").attr('id','div1');
              $("#dtr").css("display","none");
+              load_payroll_data('payroll');
+              load_payroll_total();
         }
         if(type=='dtr'){
             $("#dtr").css("display","");
@@ -850,7 +890,7 @@ $(document).ready(function(){
             $("#sales").css("display","none");
              $("#inventory").css("display","none");
              $(".dtr_report").attr('id','div1');
-              load_dtr_data();
+              load_dtr_data('dtr','no');
         }
         if(type==''){
              $("#print").css("display","none");
@@ -863,32 +903,110 @@ $(document).ready(function(){
         }
 
     });
- function load_dtr_data(is_days)
- {
-  var dataTable = $("#dtr_table").DataTable({
-   "processing":true,
-   "serverSide":true,
-   "searching": false,
-    "lengthChange": false,
-   "order":[],
-   "ajax":{
-    url:"report_fetch.php",
-    type:"POST",
-    data:{is_days:is_days}
-   }
-  });
- }
- $(document).on('change', '#days_filter', function(){
-      var no_of_days = $(this).val();
-       $('#dtr_table').DataTable().destroy();
-      if(no_of_days != '')
-      {
-        load_dtr_data(no_of_days);
-      }
-      else
-      {
-       load_dtr_data();
-      }
-  });
-    
+    function load_order_total(is_date_search,start_date='', end_date=''){
+       var action = 'order';
+        $.ajax({
+            url:"get_totals.php",
+            method:"POST",
+            data:{btn_action:action,is_date_search:is_date_search,start_date:start_date, end_date:end_date},
+            dataType:"json",
+            success:function(data){
+               $('#totalOrder').html(data.totalOrder);
+               $('#totalDailyOrder').html(data.totalDailyOrder);
+               $('#totalWeeklyOrder').html(data.totalWeeklyOrder);
+               $('#totalMonthlyOrder').html(data.totalMonthlyOrder);
+                $('#totalYearlyOrder').html(data.totalYearlyOrder);
+            }
+        })
+
+    }
+    function load_payroll_total(){
+       var action = 'payroll';
+        $.ajax({
+            url:"get_totals.php",
+            method:"POST",
+            data:{btn_action:action},
+            dataType:"json",
+            success:function(data){
+                $('#totalHoursWorked').html(data.totalHourWorked);
+                $('#totalDaysWorked').html(data.totalDaysWorked);
+                $('#totalGrossSalary').html(data.totalGrossRemit);
+                $('#totalSSSRemit').html(data.totalSSSRemit);
+                $('#totalPAGIBIGRemit').html(data.totalPAGIBIGRemit);
+                $('#totalPHILHEALTHRemit').html(data.totalPHILHEALTHRemit);
+                $('#totalNetIncome').html(data.totalNETINCOMERemit);
+            }
+        })
+
+    }
+     function load_dtr_data(action,is_date_search,start_date='', end_date='') {
+          var dataTable = $("#dtr_report_table").DataTable({
+           "processing":true,
+           "serverSide":true,
+           "searching": false,
+            "lengthChange": false,
+           "order":[],
+           "ajax":{
+                url:"report_fetch.php",
+                type:"POST",
+                data:{action:action,is_date_search:is_date_search,start_date:start_date, end_date:end_date}
+           }
+          });
+     }
+      $('#search_dtr').click(function(){
+          var start_date = $('#dtr_start_date').val();
+          var end_date = $('#dtr_end_date').val();
+          if(start_date != '' && end_date !='')
+          {
+           
+           $('#dtr_report_table').DataTable().destroy();
+           load_dtr_data('dtr','yes',start_date, end_date);
+          }
+          else
+          {
+           alert("Both Date is Required");
+          }
+     }); 
+      function load_order_data(action,is_date_search,start_date='', end_date='') {
+          var dataTable = $("#order_report").DataTable({
+           "processing":true,
+           "serverSide":true,
+           "searching": false,
+            "lengthChange": false,
+           "order":[],
+           "ajax":{
+            url:"report_fetch.php",
+            type:"POST",
+            data:{action:action,is_date_search:is_date_search,start_date:start_date, end_date:end_date}
+           }
+          });
+     }
+      $('#search_order').click(function(){
+          var start_date = $('#order_start_date').val();
+          var end_date = $('#order_end_date').val();
+          if(start_date != '' && end_date !='')
+          {
+           $('#order_report').DataTable().destroy();
+           load_order_data('order','yes',start_date, end_date);
+           load_order_total('yes',start_date, end_date);
+          }
+          else
+          {
+           alert("Both Date is Required");
+          }
+     }); 
+     function load_payroll_data(action) {
+          var dataTable = $("#payroll_table").DataTable({
+           "processing":true,
+           "serverSide":true,
+           "searching": false,
+            "lengthChange": false,
+           "order":[],
+           "ajax":{
+            url:"report_fetch.php",
+            type:"POST",
+            data:{action:action}
+           }
+          });
+     }   
 });

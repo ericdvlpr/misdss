@@ -64,33 +64,46 @@ if(isset($_POST["login"]))
 		<script src="js/jquery-1.10.2.min.js"></script>
 		<link rel="stylesheet" href="css/bootstrap.min.css" />
 		<script src="js/bootstrap.min.js"></script>
+		<style type="text/css">
+			body { 
+				    background: url("css/images/bg_img.jpg") no-repeat fixed center;
+				     background-size: 100% 100%; 
+				}
+		</style>
 	</head>
 	<body>
 		<br />
 		<div class="container">
-			<h2 align="center">Management Information System And Decision Support</h2>
-			<br />
-			<div class="panel panel-default"> 
-				<h2 align="center"> </h2>
-				 <div class="panel-heading">Log in</div> 
-				<div class="panel-body">
-					<form method="post">
-						<?php echo $message; ?>
-						<div class="form-group">
-							<label>Username</label>
-							<input type="text" name="user_email" class="form-control" required />
-						</div>
-						<div class="form-group">
-							<label>Password</label>
-							<input type="password" name="user_password" class="form-control" required />
-						</div>
+			<div class="row">
+				<div class="col-md-4"></div>	
+				<div class="col-md-4">
+					<h2 align="center" style="color:white;">Management Information System And Decision Support</h2>
+					<br />
+					<div class="panel panel-default"> 
 						
-						<div class="form-group">
-							<input type="submit" name="login" value="Login" class="btn btn-info" />
-						</div> 
-					</form>
-				</div>
+						 <div class="panel-heading"><h2 align="center">Login</h2></div> 
+						<div class="panel-body">
+							<form method="post">
+								<?php echo $message; ?>
+								<div class="form-group">
+									<label>Username</label>
+									<input type="text" name="user_email" class="form-control" required />
+								</div>
+								<div class="form-group">
+									<label>Password</label>
+									<input type="password" name="user_password" class="form-control" required />
+								</div>
+								
+								<div class="form-group">
+									<input type="submit" name="login" value="Login" class="btn btn-info" />
+								</div> 
+							</form>
+						</div>
+					</div>
+				</div>	
+				<div class="col-md-4"></div>	
 			</div>
+			
 		</div>
 		<script src="js/general.js"></script>
 

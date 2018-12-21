@@ -17,6 +17,14 @@ include('includes/head.php');
 		<div class="page-header">
 			<h1 class="text-center">DAILY TIME RECORD</h1>
 		</div>
+		<style type="text/css">
+			body { 
+				    background: url("css/images/bg_img.jpg") no-repeat fixed center;
+				     background-size: 100% 100%; 
+				}
+		</style>
+	</head>
+	<body>
   		<div class="col-xs-6 col-md-4">
   			<div class="well">
   				<form class="form-horizontal" id="dtr_form" method="POST">
@@ -71,7 +79,7 @@ include('includes/head.php');
 					  </div>
 					  <div class="form-group">
 					    <div class="col-sm-offset-2 col-sm-10">
-					      <button type="submit" class="btn btn-default">Sign in</button>
+					      <button type="submit" class="btn btn-default">Submit</button>
 					    </div>
 					  </div>
 
@@ -92,7 +100,7 @@ include('includes/head.php');
 			 	<?php 
 			 		$query = '';
 					$query .= "
-					SELECT * FROM dtr d JOIN employee_details e USING (employee_id)";
+					SELECT * FROM dtr d JOIN employee_details e USING (employee_id) GROUP BY d.employee_id ORDER BY d.date DESC";
 					$statement = $connect->prepare($query);
 
 					$statement->execute();
@@ -110,7 +118,7 @@ include('includes/head.php');
 						}else{
 							$time = $row['time_in'];
 						}
-						echo "<tr>
+						echo "<tr class='info'>
 								<td>".$row['employee_name']."</td>
 								<td>".$row['employee_position']."</td>
 								<td>".$row['date']."</td>

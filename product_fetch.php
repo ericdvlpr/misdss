@@ -61,6 +61,7 @@ foreach($result as $row)
 	$sub_array[] = $row['product_name'];
 	$sub_array[] =  $row["product_quantity"] . ' ' . $row["product_unit"];
 	$sub_array[] = $row['user_name'];
+	$sub_array[] = $row['product_date'];
 	$sub_array[] = $status;
 	$sub_array[] = '<button type="button" name="view" id="'.$row["product_id"].'" class="btn btn-info btn-xs view">View</button>';
 	$sub_array[] = '<button type="button" name="update" id="'.$row["product_id"].'" class="btn btn-warning btn-xs update">Update</button>';

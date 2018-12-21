@@ -43,6 +43,7 @@ include('includes/header.php');
                                     <th>Product Name</th>
                                     <th>Quantity</th>
                                     <th>Enter By</th>
+                                    <th>Date</th>
                                     <th>Status</th>
                                     <th></th>
                                     <th></th>
@@ -72,9 +73,8 @@ include('includes/header.php');
                             </div>
                             <div class="form-group">
                                 <label>Select Brand</label>
-                                <select name="brand_id" id="brand_id" class="form-control" required>
-                                    <option value="">Select Brand</option>
-                                </select>
+                                <input type="text" name="brand_id" id="brand_id" class="form-control" value='Sola' readonly="true" required />
+                                   
                             </div>
                             <div class="form-group">
                                 <label>Enter Product Name</label>
@@ -87,14 +87,11 @@ include('includes/header.php');
                             <div class="form-group">
                                 <label>Enter Product Quantity</label>
                                 <div class="input-group">
-                                    <input type="text" name="product_quantity" id="product_quantity" class="form-control" required pattern="[+-]?([0-9]*[.])?[0-9]+" /> 
+                                    <input type="number" autocomplete='off' name="product_quantity" id="product_quantity" class="form-control" required pattern="[+-]?([0-9]*[.])?[0-9]+" /> 
                                     <span class="input-group-addon">
                                         <select name="product_unit" id="product_unit" required>
                                             <option value="">Select Unit</option>
-                                            <option value="Bags">Bags</option>
                                             <option value="Pieces">Pieces</option>
-                                            <option value="Box">Box</option>
-                                            <option value="Dozens">Dozens</option> </select>
                                     </span>
                                 </div>
                             </div>

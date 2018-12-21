@@ -304,7 +304,7 @@ function get_total_payroll($connect)
 {
 	$query = '
 	SELECT *
-	FROM payroll LEFT JOIN employee_details USING (employee_id)
+	FROM payroll LEFT JOIN employee_details USING (employee_id) GROUP BY employee_id
 	';
 	$statement = $connect->prepare($query);
 	$statement->execute();
@@ -318,6 +318,10 @@ function get_total_payroll($connect)
 				<th>Position</th>
 				<th>Hours Worked</th>
 				<th>Days Worked</th>
+				<th>Daily Rate</th>
+				<th>Gross Income</th>
+				<th>Absences</th>
+				<th>Late</th>
 				<th>SSS</th>
 				<th>PagIbig</th>
 				<th>PhilHealth</th>
@@ -330,6 +334,7 @@ function get_total_payroll($connect)
 	$total_pagibig_remit=0;
 	$total_philhealth_remit=0;
 	$total_netincome_remit=0;
+	$total_gross=0;
 	foreach($result as $row)
 	{
 		$output .= '
@@ -339,6 +344,10 @@ function get_total_payroll($connect)
 			<td align="right"> '.$row["employee_position"].'</td>
 			<td align="right"> '.$row["hrsworked"].'</td>
 			<td align="right"> '.$row["daysworked"].'</td>
+			<td align="right"> '.$row["employee_dlyrate"].'</td>
+			<td align="right">Php'.$row["gross_income"].'</td>
+			<td align="right">'.$row["absent"].'</td>
+			<td align="right">'.$row["late"].'</td>
 			<td align="right">Php '.$row["sss"].'</td>
 			<td align="right">Php '.$row["pagibig"].'</td>
 			<td align="right">Php '.$row["philhealth"].'</td>
@@ -348,6 +357,7 @@ function get_total_payroll($connect)
 
 		$total_hours_worked = $total_hours_worked + $row["hrsworked"];
 		$total_days_worked = $total_days_worked + $row["daysworked"];
+		$total_gross = $total_gross + $row["gross_income"];
 		$total_sss_remit = $total_sss_remit + $row["sss"];
 		$total_pagibig_remit = $total_pagibig_remit + $row["pagibig"];
 		$total_philhealth_remit = $total_philhealth_remit + $row["philhealth"];
@@ -358,8 +368,12 @@ function get_total_payroll($connect)
 		<td align="right"><b>Total</b></td>
 		<td align="right">&nbsp;</td>
 		<td align="right">&nbsp;</td>
-		<td align="right"><b>'.$total_hours_worked.'</b></td>
-		<td align="right"><b>'.$total_days_worked.'</b></td>
+		<td align="right">&nbsp;</td>
+		<td align="right">&nbsp;</td>
+		<td align="right">&nbsp;</td>
+		<td align="right">&nbsp;</td>
+		<td align="right">&nbsp;</td>
+		<td align="right"><b>Php'.$total_gross.'</b></td>
 		<td align="right"><b>Php'.$total_sss_remit.'</b></td>
 		<td align="right"><b>Php'.$total_pagibig_remit.'</b></td>
 		<td align="right"><b>Php'.$total_philhealth_remit.'</b></td>
@@ -411,7 +425,7 @@ function get_total_sales($connect)
 {
 	$query = '
 	SELECT *
-	FROM inventory_order WHERE inventory_order_date BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()
+	FROM inventory_order
 	';
 	$statement = $connect->prepare($query);
 	$statement->execute();
@@ -422,33 +436,99 @@ function get_total_sales($connect)
 <tr>
 				<th>Order ID</th>
 				<th>Customer Name</th>
+				<th>Address</th>
 				<th>Order Date</th>
-				<th>Total Order</th>
+				<th>Total</th>
 			</tr>
 	';
 	$total_order = 0;
 	
 	foreach($result as $row)
 	{
+		
 		$total_order = $total_order + $row["inventory_order_total"];
 		$output .= '
 		<tr>
 			<td>'.$row['inventory_order_id'].'</td>
 			<td> '.$row["inventory_order_name"].'</td>
+			<td> '.$row["inventory_order_address"].'</td>
 			<td> '.$row["inventory_order_date"].'</td>
 			<td align="right">Php '.number_format($row["inventory_order_total"],2).'</td>
 		</tr>
 		';
 	}
+	$daily = 'SELECT CURDATE() AS Today, SUM(inventory_order_total) as DailyTotal FROM inventory_order WHERE inventory_order_date = CURDATE()';
+	$statement = $connect->prepare($daily);
+	$statement->execute();
+	$dailyTotal = $statement->fetchAll();
+	foreach($dailyTotal as $row0)
+	{	
+		$output .= '<tr align="right" class="danger"><td colspan="5"><strong>Total Sales Daily</strong> ('.$row0['Today'].'):'.number_format($row0['DailyTotal'],2).'</td></tr>';
+	}
+	$weekly = 'SELECT WEEK(inventory_order_created_date,0 ) AS Week, SUM(inventory_order_total) as WeeklyTotal FROM inventory_order GROUP BY concat(week(inventory_order_created_date))';
+	$statement = $connect->prepare($weekly);
+	$statement->execute();
+	$weeklyTotal = $statement->fetchAll();
+	foreach($weeklyTotal as $row0)
+	{	
+		$output .= '<tr align="right" class="success"><td colspan="5"><strong>Total Sales Weekly</strong> (Week '.$row0['Week'].'):'.number_format($row0['WeeklyTotal'],2).'</td></tr>';
+	}
+	$monthly = 'SELECT MONTH(inventory_order_created_date) AS Month, SUM(inventory_order_total) as MonthlyTotal FROM inventory_order GROUP BY concat(month(inventory_order_created_date))';
+	$statement = $connect->prepare($monthly);
+	$statement->execute();
+	$monthlyTotal = $statement->fetchAll();
+	foreach($monthlyTotal as $row0)
+	{	
+		$output .= '<tr align="right" class="warning"><td colspan="5"><strong>Total Sales Monthly</strong> ('.$row0['Month'].'):'.number_format($row0['MonthlyTotal'],2).'</td></tr>';
+	}
+	$yearly = 'SELECT year(inventory_order_created_date) AS Year, SUM(inventory_order_total) as YearlyTotal FROM inventory_order';
+	$statement = $connect->prepare($yearly);
+	$statement->execute();
+	$yearTotal = $statement->fetchAll();
+	foreach($yearTotal as $row0)
+	{	
+		$output .= '<tr align="right" class="info"><td colspan="5"><strong>Total Sales Yearly</strong> ('.$row0['Year'].'):'.number_format($row0['YearlyTotal'],2).'</td></tr>';
+	}
+
+	$dailyProduct = 'SELECT CURDATE() AS Today, COUNt(product_id) as dailyTotal, product_name as Product FROM inventory_order  JOIN inventory_order_product USING (inventory_order_id) JOIN product USING (product_id) ';
+	$statement = $connect->prepare($dailyProduct);
+	$statement->execute();
+	$dailyProductTotal = $statement->fetchAll();
+	foreach($dailyProductTotal as $row0)
+	{	
+		$output .= '<tr align="right" class="default"><td colspan="5"><strong>Daily Product Ordered: </strong> ('.$row0['Today'].')'.$row0['Product'].' :'.$row0['dailyTotal'].'</td></tr>';
+	}
+
+	$weekly = 'SELECT WEEK(inventory_order_created_date,0 ) AS Week, SUM(product_id) as WeeklyTotal, product_name as Product FROM inventory_order JOIN inventory_order_product USING (inventory_order_id) JOIN product USING (product_id) GROUP BY concat(week(inventory_order_created_date))';
+	$statement = $connect->prepare($weekly);
+	$statement->execute();
+	$weeklyTotal = $statement->fetchAll();
+	foreach($weeklyTotal as $row0)
+	{	
+		$output .= '<tr align="right" class="success"><td colspan="5"><strong>Weekly Product Ordered</strong> (Week '.$row0['Week'].')'.$row0['Product'].':'.$row0['WeeklyTotal'].'</td></tr>';
+	}
+	$monthly = 'SELECT MONTH(inventory_order_created_date) AS Month, SUM(product_id) as MonthlyTotal, product_name as Product FROM inventory_order JOIN inventory_order_product USING (inventory_order_id) JOIN product USING (product_id) GROUP BY concat(month(inventory_order_created_date))';
+	$statement = $connect->prepare($monthly);
+	$statement->execute();
+	$monthlyTotal = $statement->fetchAll();
+	foreach($monthlyTotal as $row0)
+	{	
+		$output .= '<tr align="right" class="warning"><td colspan="5"><strong>Monthly  Product Ordered</strong> ('.$row0['Month'].')'.$row0['Product'].':'.$row0['MonthlyTotal'].'</td></tr>';
+	}
+	$yearly = 'SELECT year(inventory_order_created_date) AS Year, SUM(product_id) as YearlyTotal, product_name as Product FROM inventory_order JOIN inventory_order_product USING (inventory_order_id) JOIN product USING (product_id)';
+	$statement = $connect->prepare($yearly);
+	$statement->execute();
+	$yearTotal = $statement->fetchAll();
+	foreach($yearTotal as $row0)
+	{	
+		$output .= '<tr align="right" class="info"><td colspan="5"><strong>Yearly  Product Ordered</strong> ('.$row0['Year'].')'.$row0['Product'].':'.$row0['YearlyTotal'].'</td></tr>';
+	}
+
+
+
 	$output .= '
-	<tr>
-		<td align="right">&nbsp;</td>
-		<td align="right">&nbsp;</td>
-		<td align="right"><b>Total</b></td>
-		<td align="right"><b>Php'.number_format($total_order = $total_order,2).'</b></td>
-	</tr></table></div>
-	';
-	return $output;
+	</table></div>';
+	//return $output;
 }
 function get_total_inventory($connect)
 {
@@ -465,6 +545,7 @@ SELECT * FROM product JOIN category USING (category_id) JOIN brand USING (brand_
 				<th width="30">Product ID</th>
 				<th width="30">Product Name</th>
 				<th width="30">Description</th>
+				<th width="10">Quantity</th>
 			</tr>
 	';
 	$total_quantity = 0;
@@ -478,9 +559,14 @@ SELECT * FROM product JOIN category USING (category_id) JOIN brand USING (brand_
 			<td  width="30">'.$row['product_id'].'</td>
 			<td  width="30"> '.$row["product_name"].'</td>
 			<td  width="30"> '.$row["product_description"].'</td>
+			<td  width="10"> '.$row["product_quantity"].'</td>
 		</tr>
 		';
 	}
+	$output .= '
+		<tr>
+			<td colspan="4" align="right">Total Quantity:'.$total_quantity.'</td>
+		</tr>';
 	$output .= '
 		</table></div>
 		';

@@ -27,7 +27,7 @@ include('includes/header.php');
                             	<h3 class="panel-title">Payroll List</h3>
                             </div>
                             <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6" align="right">
-                            	<button type="button" name="add" id="add_button" data-toggle="modal" data-target="#payrollModal" class="btn btn-success btn-xs">Add</button>
+                            	<button type="button" name="add" id="add_payroll" data-toggle="modal" data-target="#payrollModal" class="btn btn-success btn-xs">Add</button>
                         	</div>
                         </div>
                        
@@ -41,18 +41,19 @@ include('includes/header.php');
 										<th>ID</th>
 										<th>Employee Name</th>
 										<th>Position</th>
-										<th>Hours Worked</th>
+										<th>Hours Worked per Day</th>
 										<th>Days Worked</th>
+										<th>Gross Income</th>
 										<th>SSS</th>
 										<th>Pag Ibig</th>
-										<th>Phil Health</th>
-										<!-- <th>Tax</th> -->
-										<th>Net Income</th>
-										<th>Month of</th>
+										<th>PhilHealth</th>
+										<th>NetIncome</th>
+										<th>Monthof</th>
 										<th>Command</th>
 										
 									</tr>
 								</thead>
+								
                    			</table>
                    		</div>
                    	</div>
@@ -100,6 +101,18 @@ include('includes/header.php');
 							<input type="number" name="employee_dyswk" id="employee_dyswk" class="form-control" required readonly="true" />
 						</div>
 						<div class="form-group">
+							<label>Gross Income</label>
+							<input type="text" name="employee_gincome" id="employee_gincome" class="form-control" required readonly="true" />
+						</div>
+						<div class="form-group">
+							<label>Employee Absences (Days)</label>
+							<input type="number" name="employee_absent" id="employee_absent" class="form-control" required readonly="true" />
+						</div>
+						<div class="form-group">
+							<label>Employee Late (Hrs)</label>
+							<input type="text" name="employee_late" id="employee_late" class="form-control" required readonly="true" />
+						</div>
+						<div class="form-group">
 							<label>SSS Contribution</label>
 							<input type="number" name="employee_sss" id="employee_sss" class="form-control" required readonly="true" />
 						</div>
@@ -113,7 +126,7 @@ include('includes/header.php');
 						</div>
 						<div class="form-group">
 							<label>Net Income</label>
-							<input type="number" name="employee_netincome" id="employee_netincome" class="form-control" required readonly="true" />
+							<input type="text" name="employee_netincome" id="employee_netincome" class="form-control" required readonly="true" />
 						</div>
         			</div>
         			<div class="modal-footer">
@@ -135,17 +148,14 @@ include('includes/header.php');
 							<h4 class="modal-title"><i class="fa fa-plus"></i> Add Payroll</h4>
 	        			</div>
 	        			<div class="modal-body">
-		        		<table  class="table table-striped">
-		        			<thead>
+		        			<table class="table table-striped">
 		        				<tr>
 		        					<td>Date</td>
 		        					<td>Time In</td>
 		        					<td>Time Out</td>
 		        				</tr>
-		        			</thead>
-		        			<tbody id="dtr_table"></tbody>
-		        		</table>
-
+		        				<tbody id="dtr_table"></tbody>
+		        			</table>
 	        		</div>
 	       		 </div>
         	</div>

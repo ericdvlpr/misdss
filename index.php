@@ -10,6 +10,7 @@ if(!isset($_SESSION["type"]))
 
 include('includes/header.php');
 
+
 ?>
 <!-- To DO  Finish Design Dashboard -->
 	<br />

@@ -6,6 +6,7 @@ include('database_connection.php');
 
 if(isset($_POST['btn_action']))
 {
+	
 	if($_POST['btn_action'] == 'Fetch Employee Data')
 	{
 		
@@ -31,14 +32,12 @@ if(isset($_POST['btn_action']))
 			$dateWorked=$row['date'];
 			
 		}
-		// echo json_encode($output);
+		echo json_encode($output);
 	}
 	if($_POST['btn_action'] == 'Addpayroll')
 	{
-		$query = "
-		INSERT INTO payroll (employee_id, employee_name, hrsworked, daysworked, sss ,pagibig,
-                    philhealth, netincome, monthof) 
-		VALUES (:employee_id,:employee_name,:hrsworked,:daysworked, :sss,:pagibig,:philhealth,:netincome,:monthof)
+		$query = "INSERT INTO payroll (employee_id, employee_name, hrsworked, daysworked, gross_income,absent,late,sss ,pagibig,philhealth, netincome, monthof) 
+		VALUES (:employee_id,:employee_name,:hrsworked,:daysworked,:grossincome,:absent,:late, :sss,:pagibig,:philhealth,:netincome,:monthof)
 		";	
 		$statement = $connect->prepare($query);
 		$statement->execute(
@@ -47,6 +46,9 @@ if(isset($_POST['btn_action']))
 				':employee_name'	=>	$_POST["employee_name"],
 				':hrsworked'		=>	$_POST["employee_hrwk"],
 				':daysworked'		=>	$_POST["employee_dyswk"],
+				':grossincome'		=>	$_POST["employee_gincome"],
+				':absent'			=>	$_POST["employee_absent"],
+				':late'				=>	$_POST["employee_late"],
 				':sss'				=>	$_POST["employee_sss"],
 				':pagibig'			=>  $_POST["employee_pgibig"],	
 				':philhealth'		=>  $_POST["employee_phhealth"],
@@ -153,6 +155,7 @@ if(isset($_POST['btn_action']))
 		  $output .= '</table>';
 		  echo $output;
 		 }
+		 
 
 }
 

@@ -9,29 +9,9 @@ $query = '';
 $output = array();
 
 $query .= "
-SELECT * FROM payroll LEFT JOIN employee_details USING (employee_id)
+SELECT * FROM payroll LEFT JOIN employee_details USING (employee_id) GROUP BY employee_id
 ";
 
-// if(isset($_POST["search"]["value"]))
-// {
-// 	$query .= '(employee_name LIKE "%'.$_POST["search"]["value"].'%" ';
-// 	$query .= 'OR employee_name LIKE "%'.$_POST["search"]["value"].'%" ';
-// 	$query .= 'OR employee_name LIKE "%'.$_POST["search"]["value"].'%") ';
-// }
-
-// if(isset($_POST["order"]))
-// {
-// 	$query .= 'ORDER BY '.$_POST['order']['0']['column'].' '.$_POST['order']['0']['dir'].' ';
-// }
-// else
-// {
-// 	$query .= 'ORDER BY employee_id DESC ';
-// }
-
-// if($_POST["length"] != -1)
-// {
-// 	$query .= 'LIMIT ' . $_POST['start'] . ', ' . $_POST['length'];
-// }
 
 $statement = $connect->prepare($query);
 
@@ -52,10 +32,11 @@ foreach($result as $row)
 	$sub_array[] = $row['employee_position'];
 	$sub_array[] = $row['hrsworked'];
 	$sub_array[] = $row['daysworked'];
+	$sub_array[] = 'Php '.$row['gross_income'];
 	$sub_array[] = 'Php '.number_format($row['sss']);
 	$sub_array[] = 'Php '.number_format($row['pagibig']);
 	$sub_array[] = 'Php '.number_format($row['philhealth']);
-	$sub_array[] = 'Php '.number_format($row['netincome']);
+	$sub_array[] = 'Php '.$row['netincome'];
 	$sub_array[] = $row['monthof'];
 	$sub_array[] ='<button class="btn btn-default viewdtr" id="'.$row["employee_id"].'">View DTR</button>';
 	

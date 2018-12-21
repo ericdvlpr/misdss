@@ -138,6 +138,10 @@ if(isset($_POST['btn_action']))
 
 	if($_POST['btn_action'] == 'Edit')
 	{
+		if($_POST['product_quantity'] != 0)
+		{
+			$status = 'active';
+		}
 		$query = "
 		UPDATE product 
 		set category_id = :category_id, 
@@ -146,7 +150,7 @@ if(isset($_POST['btn_action']))
 		product_description = :product_description, 
 		product_quantity = :product_quantity, 
 		product_unit = :product_unit, 
-		product_base_price = :product_base_price
+		product_base_price = :product_base_price,product_status= :product_status
 		WHERE product_id = :product_id
 		";
 		$statement = $connect->prepare($query);
@@ -159,7 +163,8 @@ if(isset($_POST['btn_action']))
 				':product_quantity'		=>	$_POST['product_quantity'],
 				':product_unit'			=>	$_POST['product_unit'],
 				':product_base_price'	=>	$_POST['product_base_price'],
-				':product_id'			=>	$_POST['product_id']
+				':product_id'			=>	$_POST['product_id'],
+				':product_status'			=>	$status
 			)
 		);
 		$result = $statement->fetchAll();
@@ -192,6 +197,47 @@ if(isset($_POST['btn_action']))
 		{
 			echo 'Product status change to ' . $status;
 		}
+	}
+	if($_POST['btn_action'] == 'check quantity')
+	{
+		$query = '';
+		$output= "";
+		$query .= "
+		SELECT * FROM product WHERE product_quantity=0";
+		$statement = $connect->prepare($query);
+		$statement->execute();
+		$result = $statement->fetchAll();
+		foreach($result as $row)
+		{
+			 $output.='<p>'.$row["product_name"].'</p>';
+			 $product_id = $row["product_id"];
+			 if($result){
+				$status = 'inactive';
+			 }else{
+			 	$status = 'active';
+			 }
+			 
+			 
+				$query = "
+				UPDATE product 
+				SET product_status = :product_status 
+				WHERE product_id = :product_id
+				";
+				$statement = $connect->prepare($query);
+				$statement->execute(
+					array(
+						':product_status'	=>	$status,
+						':product_id'		=> $product_id
+					)
+				); 
+		}
+		
+		$filtered_rows = $statement->rowCount();
+		$data = array(
+              'productName'   => $output,
+              'count' => $filtered_rows
+             );
+           echo json_encode($data);
 	}
 }
 

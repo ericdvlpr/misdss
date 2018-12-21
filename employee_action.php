@@ -10,8 +10,8 @@ if(isset($_POST['btn_action']))
 	{
 		
 		$query = "
-		INSERT INTO employee_details (employee_name, employee_hrrate, employee_dlyrate, employee_perday, employee_passcode) 
-		VALUES (:employee_name, :employee_hrrate, :employee_dlyrate, :employee_perday, :employee_passcode,employee_position:employee_position)
+		INSERT INTO employee_details (employee_name, employee_hrrate, employee_dlyrate, employee_perday, employee_passcode,employee_position) 
+		VALUES (:employee_name, :employee_hrrate, :employee_dlyrate, :employee_perday, :employee_passcode,:employee_position)
 		";	
 		$statement = $connect->prepare($query);
 		$statement->execute(

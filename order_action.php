@@ -53,6 +53,15 @@ if(isset($_POST['btn_action']))
 				$base_price = $product_details['price'] * $_POST["quantity"][$count];
 				$tax = ($base_price/100)*$product_details['tax'];
 				$total_amount = $total_amount + ($base_price + $tax);
+				$update_query1 = "
+				UPDATE product 
+				SET product_quantity = product_quantity - '".$_POST["quantity"][$count]."' 
+				WHERE product_id ='".$_POST["product_id"][$count]."'
+				";
+				$statement = $connect->prepare($update_query1);
+				$statement->execute();
+
+
 			}
 			$update_query = "
 			UPDATE inventory_order 
@@ -65,10 +74,6 @@ if(isset($_POST['btn_action']))
 			if(isset($result))
 			{
 				echo 'Order Created...';
-				echo '<br />';
-				echo $total_amount;
-				echo '<br />';
-				echo $inventory_order_id;
 			}
 		}
 	}
@@ -94,7 +99,7 @@ if(isset($_POST['btn_action']))
 			$output['payment_status'] = $row['payment_status'];
 		}
 		$sub_query = "
-		SELECT * FROM inventory_order_product 
+		SELECT * FROM inventory_order_product JOIN product USING (product_id)
 		WHERE inventory_order_id = '".$_POST["inventory_order_id"]."'
 		";
 		$statement = $connect->prepare($sub_query);
@@ -102,6 +107,13 @@ if(isset($_POST['btn_action']))
 		$sub_result = $statement->fetchAll();
 		$product_details = '';
 		$count = '';
+		$product_details .='			<table class="table table-striped">
+			 <tr>
+                               <th width="60%"><label>Product Name</label></th>
+                               <th width="20%"><label>Available</label></th>
+                               <th width="20%"><label>Quantity</label></th>
+                               <th><button type="button" name="add_more" id="add_more" class="btn btn-success btn-xs">+</button></th>
+             </tr>';
 		foreach($sub_result as $sub_row)
 		{
 			$product_details .= '
@@ -111,36 +123,36 @@ if(isset($_POST['btn_action']))
 				$(".selectpicker").selectpicker();
 			});
 			</script>
+
 			<span id="row'.$count.'">
-				<div class="row">
-					<div class="col-md-8">
+				<tr>
+					<td>
 						<select name="product_id[]" id="product_id'.$count.'" class="form-control selectpicker" data-live-search="true" required>
 							'.fill_product_list($connect).'
 						</select>
 						<input type="hidden" name="hidden_product_id[]" id="hidden_product_id'.$count.'" value="'.$sub_row["product_id"].'" />
-					</div>
-					<div class="col-md-3">
-						<input type="text" name="quantity[]" class="form-control" value="'.$sub_row["quantity"].'" required />
-					</div>
-					<div class="col-md-1">
+					</td>
+					<td width="20%">
+						<input type="number" name="available[]" id="available" class="form-control" value="'.$sub_row["product_quantity"].'" readonly />
+					</td>
+					<td>
+						<input type="text" name="quantity[]" id="quantity" class="form-control" value="'.$sub_row["quantity"].'" required />
+					</td>
+					<td>
 			';
 
-			if($count == '')
-			{
-				$product_details .= '<button type="button" name="add_more" id="add_more" class="btn btn-success btn-xs">+</button>';
-			}
-			else
-			{
+			
 				$product_details .= '<button type="button" name="remove" id="'.$count.'" class="btn btn-danger btn-xs remove">-</button>';
-			}
-			$product_details .= '
-						</div>
-					</div>
-				</div><br />
-			</span>
-			';
+			
+			
 			//$count = $count + 1;
 		}
+		$product_details .= '
+						</td>
+					</tr>
+			</span>
+			</table>
+			';
 		$output['product_details'] = $product_details;
 		echo json_encode($output);
 	}
